@@ -1,4 +1,4 @@
-package Laba2
+package main
 
 import "fmt"
 
