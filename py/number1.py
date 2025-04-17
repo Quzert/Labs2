@@ -26,7 +26,7 @@ def startPosFinder(m,n,s):
             x += 1
             if x > rX:
                 rX = x
-
+    print(x,y)
     if rX-lX >= m or dY-uY >= n:
         return "No"
     return 1 - lX , 1 - uY
