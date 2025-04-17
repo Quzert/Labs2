@@ -1,34 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
 
 class Program
 {
-    static void Main()
+    static void StartPosFinder(int m, int n, string s)
     {
-        var addressList1 = new List<string> { "mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru" };
-        var addressList2 = new List<string> { "mar.pha+science@corp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru" };
-        var addressList3 = new List<string> { "mar.pha+science@co.rp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru" };
+        int x = 0;
+        int y = 0;
+        int rx = 0;
+        int lx = 0;
+        int uy = 0;
+        int dy = 0;
 
-        Console.WriteLine(EmailCount(addressList1)); // 1
-        Console.WriteLine(EmailCount(addressList2)); // 1
-        Console.WriteLine(EmailCount(addressList3)); // 2
-    }
-
-    static int EmailCount(List<string> emailList)
-    {
-        var uniqueEmails = new HashSet<string>();
-
-        foreach (var email in emailList)
+        foreach (char c in s)
         {
-            var parts = email.Split('@');
-            var local = parts[0].Replace(".", "");
-            if (local.Contains("+"))
+            if (c == 'U')
             {
-                local = local.Split('+')[0];
+                y--;
+                if (y < uy) uy = y;
             }
-            uniqueEmails.Add(local + "@" + parts[1]);
+            else if (c == 'D')
+            {
+                y++;
+                if (y > dy) dy = y;
+            }
+            else if (c == 'L')
+            {
+                x--;
+                if (x < lx) lx = x;
+            }
+            else if (c == 'R')
+            {
+                x++;
+                if (x > rx) rx = x;
+            }
         }
 
-        return uniqueEmails.Count;
+        if (rx - lx >= m || dy - uy >= n)
+        {
+            Console.WriteLine("No");
+        }
+        else
+        {
+            Console.WriteLine($"{1 - lx} {1 - uy}");
+        }
+    }
+
+    static void Main()
+    {
+        string s = "ULDDRRUU";
+        StartPosFinder(3, 3, s);
     }
 }
