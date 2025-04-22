@@ -1,15 +1,47 @@
 use std::collections::HashSet;
 
+fn is_valid_username(username: &str) -> bool {
+    if username.len() < 6 || username.len() > 30 {
+        return false;
+    }
+
+    if username.starts_with('.') || username.ends_with('.') {
+        return false;
+    }
+
+    if username.contains("..") {
+        return false;
+    }
+
+    if username.chars().any(|c| "&=+<>,_'-".contains(c)) {
+        return false;
+    }
+
+    if !username.chars().all(|c| c.is_alphanumeric() || c == '.') {
+        return false;
+    }
+
+    true
+}
+
 fn email_count(email_list: Vec<&str>) -> usize {
     let mut unique_emails = HashSet::new();
 
     for email in email_list {
         let parts: Vec<&str> = email.split('@').collect();
-        let mut local = parts[0].replace('.', "");
-        if let Some(pos) = local.find('+') {
-            local = local[..pos].to_string();
-        }
+        let mut local = parts[0];
         let domain = parts[1];
+
+        if !is_valid_username(local) {
+            println!("Некорректное имя пользователя: {}", local);
+            continue;
+        }
+
+        local = &local.replace('.', "");
+        if let Some(pos) = local.find('*') {
+            local = &local[..pos];
+        }
+
         unique_emails.insert(format!("{}@{}", local, domain));
     }
 
@@ -17,11 +49,6 @@ fn email_count(email_list: Vec<&str>) -> usize {
 }
 
 fn main() {
-    let addres_list1 = vec!["mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"];
-    let addres_list2 = vec!["mar.pha+science@corp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru"];
-    let addres_list3 = vec!["mar.pha+science@co.rp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru"];
-
-    println!("{}", email_count(addres_list1));  // 1
-    println!("{}", email_count(addres_list2));  // 1
-    println!("{}", email_count(addres_list3));  // 2
+    let address_list1 = vec!["mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"];
+    println!("{}", email_count(address_list1));
 }

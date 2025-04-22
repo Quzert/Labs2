@@ -1,25 +1,52 @@
 import Foundation
 
-let addresList1Swift = ["mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"]
-let addresList2Swift = ["mar.pha+science@corp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru"]
-let addresList3Swift = ["mar.pha+science@co.rp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru"]
+func isValidUsername(_ username: String) -> Bool {
+    if username.count < 6 || username.count > 30 {
+        return false
+    }
+
+    if username.hasPrefix(".") || username.hasSuffix(".") {
+        return false
+    }
+
+    if username.contains("..") {
+        return false
+    }
+
+    if username.range(of: "[&=+<>,_'-]", options: .regularExpression) != nil {
+        return false
+    }
+
+    if username.range(of: "^[a-zA-Z0-9.]*$", options: .regularExpression) == nil {
+        return false
+    }
+
+    return true
+}
 
 func emailCount(emailList: [String]) -> Int {
     var uniqueEmails = Set<String>()
+
     for email in emailList {
-        if let atIndex = email.firstIndex(of: "@") {
-            let localPart = String(email[..<atIndex]).components(separatedBy: ".").joined()
-            let domainPart = String(email[atIndex...])
-            if let plusIndex = localPart.firstIndex(of: "+") {
-                uniqueEmails.insert(String(localPart[..<plusIndex]) + domainPart)
-            } else {
-                uniqueEmails.insert(localPart + domainPart)
-            }
+        let parts = email.split(separator: "@")
+        var local = String(parts[0])
+        let domain = String(parts[1])
+
+        if !isValidUsername(local) {
+            print("Некорректное имя пользователя: \(local)")
+            continue
         }
+
+        local = local.replacingOccurrences(of: ".", with: "")
+        if let starIndex = local.firstIndex(of: "*") {
+            local = String(local[..<starIndex])
+        }
+
+        uniqueEmails.insert("\(local)@\(domain)")
     }
+
     return uniqueEmails.count
 }
 
-print(emailCount(emailList: addresList1Swift))
-print(emailCount(emailList: addresList2Swift))
-print(emailCount(emailList: addresList3Swift))
+let addressList1 = ["mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"]
+print(emailCount(emailList: addressList1))

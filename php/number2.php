@@ -1,26 +1,51 @@
 <?php
 
-$addres_list1 = ["mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"];  // 1
-$addres_list2 = ["mar.pha+science@corp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru"];  // 1
-$addres_list3 = ["mar.pha+science@co.rp.nstu.ru", "marpha+scie.nce@corp.nstu.ru", "marph.a+s.c.i.e.n.c.e+@corp.nstu.ru"];  // 2
+function is_valid_username($username) {
+    if (strlen($username) < 6 || strlen($username) > 30) {
+        return false;
+    }
+
+    if (preg_match('/[&=+<>,_\'\-]/', $username)) {
+        return false;
+    }
+
+    if ($username[0] === '.' || $username[strlen($username) - 1] === '.') {
+        return false;
+    }
+
+    if (strpos($username, '..') !== false) {
+        return false;
+    }
+
+    if (!preg_match('/^[a-zA-Z0-9.]*$/', $username)) {
+        return false;
+    }
+
+    return true;
+}
 
 function email_count($email_list) {
     $unique_emails = [];
 
     foreach ($email_list as $email) {
         list($local, $domain) = explode('@', $email);
-        $local = str_replace('.', '', $local);
-        if (strpos($local, '+') !== false) {
-            $local = substr($local, 0, strpos($local, '+'));  // Удаляем часть после '+'
+
+        if (!is_valid_username($local)) {
+            echo "Некорректное имя пользователя: $local\n";
+            continue;
         }
+
+        $local = str_replace('.', '', $local);
+        if (strpos($local, '*') !== false) {
+            $local = substr($local, 0, strpos($local, '*'));
+        }
+
         $unique_emails[$local . '@' . $domain] = true;
     }
 
     return count($unique_emails);
 }
 
-echo email_count($addres_list1) . "\n";  // 1
-echo email_count($addres_list2) . "\n";  // 1
-echo email_count($addres_list3) . "\n";  // 2
-
+$address_list1 = ["mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"];
+echo email_count($address_list1) . "\n";
 ?>
