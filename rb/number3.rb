@@ -15,15 +15,11 @@ def count_non_decreasing_series(sequence)
   cnt
 end
 
-def str_to_list(s)
-  s.chars.map(&:to_i)
-end
-
-sequence1 = [5, 1, 2, 3, 2, 5]
+sequence1 = "512325"
 puts "Количество неубывающих серий №1: #{count_non_decreasing_series(sequence1)}"
 
-sequence2 = str_to_list("484756344")
+sequence2 = "484756344"
 puts "Количество неубывающих серий №2: #{count_non_decreasing_series(sequence2)}"
 
-sequence3 = str_to_list("12345678998765432123456789987654321")
+sequence3 = "12345678998765432123456789987654321"
 puts "Количество неубывающих серий №3: #{count_non_decreasing_series(sequence3)}"

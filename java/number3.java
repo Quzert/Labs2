@@ -1,16 +1,13 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Number3 {
-    public static int countNonDecreasingSeries(List<Integer> sequence) {
+    public static int countNonDecreasingSeries(String sequence) {
         int cnt = 0;
-        int n = sequence.size();
+        int n = sequence.length();
         int i = 0;
 
         while (i < n - 1) {
-            if (sequence.get(i) <= sequence.get(i + 1)) {
+            if (sequence.charAt(i) <= sequence.charAt(i + 1)) {
                 cnt++;
-                while (i < n - 1 && sequence.get(i) <= sequence.get(i + 1)) {
+                while (i < n - 1 && sequence.charAt(i) <= sequence.charAt(i + 1)) {
                     i++;
                 }
             } else {
@@ -21,22 +18,14 @@ public class Number3 {
         return cnt;
     }
 
-    public static List<Integer> strToList(String s) {
-        List<Integer> list = new ArrayList<>();
-        for (char c : s.toCharArray()) {
-            list.add(Character.getNumericValue(c));
-        }
-        return list;
-    }
-
     public static void main(String[] args) {
-        List<Integer> sequence1 = List.of(5, 1, 2, 3, 2, 5);
-        System.out.println(countNonDecreasingSeries(sequence1));
+        String sequence1 = "512325";
+        System.out.println("Количество неубывающих серий №1: " + countNonDecreasingSeries(sequence1));
 
-        List<Integer> sequence2 = strToList("484756344");
-        System.out.println(countNonDecreasingSeries(sequence2));
+        String sequence2 = "484756344";
+        System.out.println("Количество неубывающих серий №2: " + countNonDecreasingSeries(sequence2));
 
-        List<Integer> sequence3 = strToList("12345678998765432123456789987654321");
-        System.out.println(countNonDecreasingSeries(sequence3));
+        String sequence3 = "12345678998765432123456789987654321";
+        System.out.println("Количество неубывающих серий №3: " + countNonDecreasingSeries(sequence3));
     }
 }
