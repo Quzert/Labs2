@@ -2,31 +2,20 @@ package main
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 )
 
+// Функция для проверки корректности имени пользователя
 func isValidUsername(username string) bool {
 	if len(username) < 6 || len(username) > 30 {
 		return false
 	}
-
 	if strings.HasPrefix(username, ".") || strings.HasSuffix(username, ".") {
 		return false
 	}
-
 	if strings.Contains(username, "..") {
 		return false
 	}
-
-	if matched, _ := regexp.MatchString(`[&=+<>,_'\-]`, username); matched {
-		return false
-	}
-
-	if matched, _ := regexp.MatchString(`^[a-zA-Z0-9.]*$`, username); !matched {
-		return false
-	}
-
 	return true
 }
 
@@ -35,6 +24,11 @@ func emailCount(emailList []string) int {
 
 	for _, email := range emailList {
 		parts := strings.Split(email, "@")
+		if len(parts) != 2 {
+			fmt.Println("Некорректный email:", email)
+			continue
+		}
+
 		local := parts[0]
 		domain := parts[1]
 
@@ -44,6 +38,7 @@ func emailCount(emailList []string) int {
 		}
 
 		local = strings.ReplaceAll(local, ".", "")
+
 		if starIndex := strings.Index(local, "*"); starIndex != -1 {
 			local = local[:starIndex]
 		}
@@ -55,6 +50,20 @@ func emailCount(emailList []string) int {
 }
 
 func main() {
-	addressList1 := []string{"mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru"}
-	fmt.Println(emailCount(addressList1))
+	// Пример 1
+	addressList1 := []string{
+		"mar.pha+science@corp.nstu.ru",
+		"marpha+scie.nce@corp.nstu.ru",
+		"marph.a+s.c.i.e.n.c.e+@corp.nstu.ru",
+	}
+	fmt.Printf("Output (Пример 1): %d\n", emailCount(addressList1))
+
+	// Пример 2
+	addressList2 := []string{
+		"mar.pha+science@co.rp.nstu.ru",
+		"marpha+scie.nce@corp.nstu.ru",
+		"marph.a+s.c.i.e.n.c.e+@corp.nstu.ru",
+	}
+	fmt.Printf("Output (Пример 2): %d\n", emailCount(addressList2))
+
 }

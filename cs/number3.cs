@@ -30,12 +30,12 @@ class Program
     static void Main()
     {
         string sequence1 = "512325";
-        Console.WriteLine($"Количество неубывающих серий №1: {CountNonDecreasingSeries(sequence1)}");
+        Console.WriteLine($"1: {CountNonDecreasingSeries(sequence1)}");
 
         string sequence2 = "484756344";
-        Console.WriteLine($"Количество неубывающих серий №2: {CountNonDecreasingSeries(sequence2)}");
+        Console.WriteLine($"2: {CountNonDecreasingSeries(sequence2)}");
 
         string sequence3 = "12345678998765432123456789987654321";
-        Console.WriteLine($"Количество неубывающих серий №3: {CountNonDecreasingSeries(sequence3)}");
+        Console.WriteLine($"3: {CountNonDecreasingSeries(sequence3)}");
     }
 }

@@ -1,65 +1,61 @@
+// Java
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class EmailProcessor {
+class EmailCounter {
 
+    private static final Pattern FORBIDDEN_CHARS = Pattern.compile("[&=+<>,_'-]");
+    private static final Pattern ALLOWED_CHARS = Pattern.compile("^[a-zA-Z0-9.*]*$");
+
+    // Проверка имени пользователя на соответствие правилам
     private static boolean isValidUsername(String username) {
-        if (username.length() < 6 || username.length() > 30) {
-            return false;
-        }
-        if (username.startsWith(".") || username.endsWith(".")) {
-            return false;
-        }
-        if (username.contains("..")) {
-            return false;
-        }
-        if (Pattern.compile("[&=+<>,_'\\-]").matcher(username).find()) {
-            return false;
-        }
-        if (!Pattern.compile("^[a-zA-Z0-9.]*$").matcher(username).matches()) {
-            return false;
-        }
+        if (username.length() < 6 || username.length() > 30) return false;
+        if (FORBIDDEN_CHARS.matcher(username).find()) return false;
+        if (username.startsWith(".") || username.endsWith(".")) return false;
+        if (username.contains("..")) return false;
+        if (!ALLOWED_CHARS.matcher(username).matches()) return false;
         return true;
     }
 
     public static int emailCount(List<String> emailList) {
+        // Используем Set для хранения уникальных нормализованных адресов
         Set<String> uniqueEmails = new HashSet<>();
 
         for (String email : emailList) {
-            String[] parts = email.split("@");
-            if (parts.length != 2) {
+            int atPos = email.indexOf('@');
+            if (atPos <= 0 || atPos == email.length() - 1) {
                 continue;
             }
 
-            String local = parts[0];
-            String domain = parts[1];
+            String local = email.substring(0, atPos);
+            String domain = email.substring(atPos + 1);
 
+            // Сначала валидируем оригинальное имя пользователя
             if (!isValidUsername(local)) {
-                System.out.println("Некорректное имя пользователя: " + local);
                 continue;
             }
 
-            local = local.replace(".", "");
-            int starIndex = local.indexOf('*');
-            if (starIndex != -1) {
-                local = local.substring(0, starIndex);
+            // Нормализация: убираем все после '*' и удаляем все '.'
+            int starPos = local.indexOf('*');
+            if (starPos != -1) {
+                local = local.substring(0, starPos);
             }
+            String cleanedLocal = local.replace(".", "");
 
-            uniqueEmails.add(local + "@" + domain);
+            uniqueEmails.add(cleanedLocal + "@" + domain);
         }
-
         return uniqueEmails.size();
     }
 
     public static void main(String[] args) {
         List<String> addressList1 = List.of("mar.pha@corp.nstu.ru", "marpha@corp.nstu.ru", "marph.a@corp.nstu.ru");
-        List<String> addressList2 = List.of("mar.pha*science@corp.nstu.ru", "marpha*scie.nce@corp.nstu.ru", "marph.a*s.c.i.e.n.c.e+@corp.nstu.ru");
-        List<String> addressList3 = List.of("mar.pha*science@co.rp.nstu.ru", "marpha*scie.nce@corp.nstu.ru", "marph.a*s.c.i.e.n.c.e+@corp.nstu.ru");
+        List<String> addressList2 = List.of("mar.pha*science@corp.nstu.ru", "marpha*scie.nce@corp.nstu.ru", "marph.a*s.c.i.e.n.c.e@corp.nstu.ru");
+        List<String> addressList3 = List.of("mar.pha*science@co.rp.nstu.ru", "marpha*scie.nce@corp.nstu.ru", "marph.a*s.c.i.e.n.c.e@corp.nstu.ru");
 
-        System.out.println(emailCount(addressList1)); // 1
-        System.out.println(emailCount(addressList2)); // 1
-        System.out.println(emailCount(addressList3)); // 2
+        System.out.println("List 1 Count: " + emailCount(addressList1));
+        System.out.println("List 2 Count: " + emailCount(addressList2));
+        System.out.println("List 3 Count: " + emailCount(addressList3));
     }
 }

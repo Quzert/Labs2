@@ -20,12 +20,12 @@ public class Number3 {
 
     public static void main(String[] args) {
         String sequence1 = "512325";
-        System.out.println("Количество неубывающих серий №1: " + countNonDecreasingSeries(sequence1));
+        System.out.println("1: " + countNonDecreasingSeries(sequence1));
 
         String sequence2 = "484756344";
-        System.out.println("Количество неубывающих серий №2: " + countNonDecreasingSeries(sequence2));
+        System.out.println("2: " + countNonDecreasingSeries(sequence2));
 
         String sequence3 = "12345678998765432123456789987654321";
-        System.out.println("Количество неубывающих серий №3: " + countNonDecreasingSeries(sequence3));
+        System.out.println("3: " + countNonDecreasingSeries(sequence3));
     }
 }
