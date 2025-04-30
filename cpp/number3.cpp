@@ -4,14 +4,14 @@
 
 using namespace std;
 
-int count_non_decreasing_series(const vector<int>& sequence) {
+int count_non_decreasing_series(const string& sequence) {
     int cnt = 0;
     int n = sequence.size();
     int i = 0;
     while (i < n - 1) {
-        if (sequence[i] <= sequence[i + 1]) {
+        if (static_cast<int>(sequence[i]) <= static_cast<int>(sequence[i + 1])) {
             cnt++;
-            while (i < n - 1 && sequence[i] <= sequence[i + 1]) {
+            while (i < n - 1 && static_cast<int>(sequence[i]) <= static_cast<int>(sequence[i + 1])) {
                 i++;
             }
         } else {
@@ -30,14 +30,11 @@ vector<int> str_to_list(const string& s) {
 }
 
 int main() {
-    vector<int> sequence1 = {5, 1, 2, 3, 2, 5};
-    cout << "Количество неубывающих серий №1: " << count_non_decreasing_series(sequence1) << endl;
+    cout << "Количество неубывающих серий №1: " << count_non_decreasing_series("512325") << endl;
 
-    vector<int> sequence2 = str_to_list("484756344");
-    cout << "Количество неубывающих серий №2: " << count_non_decreasing_series(sequence2) << endl;
+    cout << "Количество неубывающих серий №2: " << count_non_decreasing_series("484756344") << endl;
 
-    vector<int> sequence3 = str_to_list("12345678998765432123456789987654321");
-    cout << "Количество неубывающих серий №3: " << count_non_decreasing_series(sequence3) << endl;
+    cout << "Количество неубывающих серий №3: " << count_non_decreasing_series("12345678998765432123456789987654321") << endl;
 
     return 0;
 }
