@@ -1,29 +1,36 @@
 <?php
+error_reporting(0);
 
-function count_non_decreasing_series($sequence) {
+function cnt_non_dec_series(): int {
+    $len_series = 0;
     $cnt = 0;
-    $n = strlen($sequence);
-    $i = 0;
-    while ($i < $n - 1) {
-        if ($sequence[$i] <= $sequence[$i + 1]) {
-            $cnt++;
-            while ($i < $n - 1 && $sequence[$i] <= $sequence[$i + 1]) {
-                $i++;
+
+    $len = (int)trim(fgets(STDIN));
+
+    if ($len > 0) {
+        $num1 = (int)trim(fgets(STDIN));
+        $num2 = 0;
+
+        for ($i = 1; $i < $len; $i++) {
+            $num2 = (int)trim(fgets(STDIN));
+
+            if ($num2 >= $num1) {
+                $len_series++;
+            } else if ($len_series != 0) {
+                $cnt++;
+                $len_series = 0;
             }
-        } else {
-            $i++;
+            $num1 = $num2;
+        }
+
+        if ($len_series != 0) {
+            $cnt++;
         }
     }
     return $cnt;
 }
 
-$sequence1 = "512325";
-echo "Количество неубывающих серий №1: " . count_non_decreasing_series($sequence1) . "\n";
-
-$sequence2 = "484756344";
-echo "Количество неубывающих серий №2: " . count_non_decreasing_series($sequence2) . "\n";
-
-$sequence3 = "12345678998765432123456789987654321";
-echo "Количество неубывающих серий №3: " . count_non_decreasing_series($sequence3) . "\n";
+$result = cnt_non_dec_series();
+echo "Количество неубывающих серий: " . $result . "\n";
 
 ?>

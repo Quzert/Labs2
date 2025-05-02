@@ -1,41 +1,45 @@
 using System;
 
-class Program
+public class CountSeriesFuncNoComments
 {
-    static int CountNonDecreasingSeries(string sequence)
+    public static int CntNonDecSeries()
     {
-        int count = 0;
-        int n = sequence.Length;
-        int i = 0;
+        int len_series = 0;
+        int cnt = 0;
 
-        while (i < n - 1)
+        int len = int.Parse(Console.ReadLine());
+
+        if (len > 0)
         {
-            if (sequence[i] <= sequence[i + 1])
+            int num1 = int.Parse(Console.ReadLine());
+            int num2 = 0;
+
+            for (int i = 1; i < len; i++)
             {
-                count++;
-                while (i < n - 1 && sequence[i] <= sequence[i + 1])
+                num2 = int.Parse(Console.ReadLine());
+                if (num2 >= num1)
                 {
-                    i++;
+                    len_series++;
                 }
+                else if (len_series != 0)
+                {
+                    cnt++;
+                    len_series = 0;
+                }
+                num1 = num2;
             }
-            else
+
+            if (len_series != 0)
             {
-                i++;
+                cnt++;
             }
         }
-
-        return count;
+        return cnt;
     }
 
-    static void Main()
+    public static void Main(string[] args)
     {
-        string sequence1 = "512325";
-        Console.WriteLine($"1: {CountNonDecreasingSeries(sequence1)}");
-
-        string sequence2 = "484756344";
-        Console.WriteLine($"2: {CountNonDecreasingSeries(sequence2)}");
-
-        string sequence3 = "12345678998765432123456789987654321";
-        Console.WriteLine($"3: {CountNonDecreasingSeries(sequence3)}");
+        int result = CntNonDecSeries();
+        Console.WriteLine($"Количество неубывающих серий: {result}");
     }
 }

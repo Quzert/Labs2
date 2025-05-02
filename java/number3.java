@@ -1,31 +1,39 @@
-public class Number3 {
-    public static int countNonDecreasingSeries(String sequence) {
-        int cnt = 0;
-        int n = sequence.length();
-        int i = 0;
+import java.util.Scanner;
 
-        while (i < n - 1) {
-            if (sequence.charAt(i) <= sequence.charAt(i + 1)) {
-                cnt++;
-                while (i < n - 1 && sequence.charAt(i) <= sequence.charAt(i + 1)) {
-                    i++;
+public class CountSeriesFuncNoComments {
+
+    public static int cntNonDecSeries(Scanner scanner) {
+        int len_series = 0;
+        int cnt = 0;
+
+        int len = scanner.nextInt();
+
+        if (len > 0) {
+            int num1 = scanner.nextInt();
+            int num2 = 0;
+
+            for (int i = 1; i < len; i++) {
+                num2 = scanner.nextInt();
+                if (num2 >= num1) {
+                    len_series++;
+                } else if (len_series != 0) {
+                    cnt++;
+                    len_series = 0;
                 }
-            } else {
-                i++;
+                num1 = num2;
+            }
+
+            if (len_series != 0) {
+                cnt++;
             }
         }
-
         return cnt;
     }
 
     public static void main(String[] args) {
-        String sequence1 = "512325";
-        System.out.println("1: " + countNonDecreasingSeries(sequence1));
-
-        String sequence2 = "484756344";
-        System.out.println("2: " + countNonDecreasingSeries(sequence2));
-
-        String sequence3 = "12345678998765432123456789987654321";
-        System.out.println("3: " + countNonDecreasingSeries(sequence3));
+        Scanner scanner = new Scanner(System.in);
+        int result = cntNonDecSeries(scanner);
+        System.out.println("Количество неубывающих серий: " + result);
+        scanner.close();
     }
 }

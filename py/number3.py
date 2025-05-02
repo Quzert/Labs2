@@ -1,21 +1,26 @@
-def count_non_decreasing_series(sequence):
+def cnt_non_dec_series():
+    len_series = 0
     cnt = 0
-    n = len(sequence)
-    i = 0
-    while i < n - 1:
-        if sequence[i] <= sequence[i + 1]:
+
+    length = int(input())
+
+    if length > 0:
+        num1 = int(input())
+        num2 = 0
+
+        for _ in range(1, length):
+            num2 = int(input())
+            if num2 >= num1:
+                len_series += 1
+            elif len_series != 0:
+                cnt += 1
+                len_series = 0
+            num1 = num2
+
+        if len_series != 0:
             cnt += 1
-            while i < n - 1 and sequence[i] <= sequence[i + 1]:
-                i += 1
-        else:
-            i += 1
     return cnt
 
-sequence1 = "512325"
-print(f"Количество неубывающих серий №1: {count_non_decreasing_series(sequence1)}")
 
-sequence2 = "484756344"
-print(f"Количество неубывающих серий №2: {count_non_decreasing_series(sequence2)}")
-
-sequence3 = "12345678998765432123456789987654321"
-print(f"Количество неубывающих серий №3: {count_non_decreasing_series(sequence3)}")
+result = cnt_non_dec_series()
+print(f"Количество неубывающих серий: {result}")

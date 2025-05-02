@@ -1,29 +1,33 @@
-func countNonDecreasingSeries(sequence: [Int]) -> Int {
+import Foundation
+
+func cntNonDecSeries() -> Int {
+    var lenSeries = 0
     var cnt = 0
-    let n = sequence.count
-    var i = 0
-    while i < n - 1 {
-        if sequence[i] <= sequence[i + 1] {
-            cnt += 1
-            while i < n - 1 && sequence[i] <= sequence[i + 1] {
-                i += 1
+
+    let len = Int(readLine()!)!
+
+    if len > 0 {
+        var num1 = Int(readLine()!)!
+        var num2 = 0
+
+        for _ in 1..<len {
+            num2 = Int(readLine()!)!
+
+            if num2 >= num1 {
+                lenSeries += 1
+            } else if lenSeries != 0 {
+                cnt += 1
+                lenSeries = 0
             }
-        } else {
-            i += 1
+            num1 = num2
+        }
+
+        if lenSeries != 0 {
+            cnt += 1
         }
     }
     return cnt
 }
 
-func strToList(s: String) -> [Int] {
-    return s.compactMap { Int(String($0)) }
-}
-
-let sequence1Swift = [5, 1, 2, 3, 2, 5]
-print("Количество неубывающих серий №1: \(countNonDecreasingSeries(sequence: sequence1Swift))")
-
-let sequence2Swift = strToList(s: "484756344")
-print("Количество неубывающих серий №2: \(countNonDecreasingSeries(sequence: sequence2Swift))")
-
-let sequence3Swift = strToList(s: "12345678998765432123456789987654321")
-print("Количество неубывающих серий №3: \(countNonDecreasingSeries(sequence: sequence3Swift))")
+let result = cntNonDecSeries()
+print("Количество неубывающих серий: \(result)")

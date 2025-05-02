@@ -1,27 +1,33 @@
-function countNonDecreasingSeries(sequence) {
-    let cnt = 0;
-    const n = sequence.length;
-    let i = 0;
+const readlineSync = require('readline-sync');
 
-    while (i < n - 1) {
-        if (sequence[i] <= sequence[i + 1]) {
-            cnt++;
-            while (i < n - 1 && sequence[i] <= sequence[i + 1]) {
-                i++;
+function cntNonDecSeries() {
+    let len_series = 0;
+    let cnt = 0;
+
+    const len = parseInt(readlineSync.question(''), 10) || 0;
+
+    if (len > 0) {
+        let num1 = parseInt(readlineSync.question(''), 10);
+        let num2 = 0;
+
+        for (let i = 1; i < len; i++) {
+            num2 = parseInt(readlineSync.question(''), 10);
+
+            if (num2 >= num1) {
+                len_series++;
+            } else if (len_series !== 0) {
+                cnt++;
+                len_series = 0;
             }
-        } else {
-            i++;
+            num1 = num2;
+        }
+
+        if (len_series !== 0) {
+            cnt++;
         }
     }
-
     return cnt;
 }
 
-const sequence1 = "512325";
-console.log(`Количество неубывающих серий №1: ${countNonDecreasingSeries(sequence1)}`);
-
-const sequence2 = "484756344";
-console.log(`Количество неубывающих серий №2: ${countNonDecreasingSeries(sequence2)}`);
-
-const sequence3 = "12345678998765432123456789987654321";
-console.log(`Количество неубывающих серий №3: ${countNonDecreasingSeries(sequence3)}`);
+const result = cntNonDecSeries();
+console.log(`Количество неубывающих серий: ${result}`);

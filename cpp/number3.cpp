@@ -1,40 +1,39 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include  <vector>
 
 using namespace std;
 
-int count_non_decreasing_series(const string& sequence) {
+int cnt_non_dec_series() {
+    int len_series = 0;
     int cnt = 0;
-    int n = sequence.size();
-    int i = 0;
-    while (i < n - 1) {
-        if (static_cast<int>(sequence[i]) <= static_cast<int>(sequence[i + 1])) {
-            cnt++;
-            while (i < n - 1 && static_cast<int>(sequence[i]) <= static_cast<int>(sequence[i + 1])) {
-                i++;
-            }
-        } else {
-            i++;
+
+    int len = 0;
+    cin >> len;
+
+    int num1 = 0;
+    cin >> num1;
+    int num2 = 0;
+    for (int i = 1; i < len;i++) {
+        cin >> num2;
+        if (num2 >= num1) {
+            len_series++;
+            num1 = num2;
+        } else if( len_series != 0) {
+            cnt ++;
+            len_series = 0;
         }
+    }
+    if (len_series != 0) {
+        cnt++;
     }
     return cnt;
 }
 
-vector<int> str_to_list(const string& s) {
-    vector<int> result;
-    for (char c : s) {
-        result.push_back(c - '0');
-    }
-    return result;
-}
+
 
 int main() {
-    cout << "Количество неубывающих серий №1: " << count_non_decreasing_series("512325") << endl;
-
-    cout << "Количество неубывающих серий №2: " << count_non_decreasing_series("484756344") << endl;
-
-    cout << "Количество неубывающих серий №3: " << count_non_decreasing_series("12345678998765432123456789987654321") << endl;
-
+    cout << "Ведите кол-во чисел: " << cnt_non_dec_series() << endl;
     return 0;
 }

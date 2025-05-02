@@ -1,31 +1,39 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-func countNonDecreasingSeries(sequence string) int {
-	cnt, n, i := 0, len(sequence), 0
-	for i < n-1 {
-		if sequence[i] <= sequence[i+1] {
-			cnt++
-			for i < n-1 && sequence[i] <= sequence[i+1] {
-				i++
+func cntNonDecSeries() int {
+	lenSeries := 0
+	cnt := 0
+
+	var length int
+	fmt.Scanln(&length)
+
+	if length > 0 {
+		var num1 int
+		fmt.Scanln(&num1)
+
+		var num2 int
+		for i := 1; i < length; i++ {
+			fmt.Scanln(&num2)
+
+			if num2 >= num1 {
+				lenSeries++
+			} else if lenSeries != 0 {
+				cnt++
+				lenSeries = 0
 			}
-		} else {
-			i++
+			num1 = num2
+		}
+
+		if lenSeries != 0 {
+			cnt++
 		}
 	}
 	return cnt
 }
 
 func main() {
-	sequence1 := "512325"
-	fmt.Printf("Количество неубывающих серий №1: %d\n", countNonDecreasingSeries(sequence1))
-
-	sequence2 := "484756344"
-	fmt.Printf("Количество неубывающих серий №2: %d\n", countNonDecreasingSeries(sequence2))
-
-	sequence3 := "12345678998765432123456789987654321"
-	fmt.Printf("Количество неубывающих серий №3: %d\n", countNonDecreasingSeries(sequence3))
+	result := cntNonDecSeries()
+	fmt.Printf("Количество неубывающих серий: %d\n", result)
 }
